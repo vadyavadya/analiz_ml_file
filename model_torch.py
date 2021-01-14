@@ -8,8 +8,6 @@ import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 
-from logger_f import info_log, error_log
-
 
 class SparseFeaturesDataset(Dataset):
     def __init__(self, features, targets):
@@ -116,8 +114,6 @@ def train_eval_loop(model, train_dataset, val_dataset, criterion,
             epoch_start = datetime.datetime.now()
             print('Эпоха {}'.format(epoch_i))
 
-            info_log('Эпоха {}'.format(epoch_i))
-
             model.train()
             mean_train_loss = 0
             train_batches_n = 0
@@ -144,10 +140,6 @@ def train_eval_loop(model, train_dataset, val_dataset, criterion,
                                                            (datetime.datetime.now() - epoch_start).total_seconds()))
             print('Среднее значение функции потерь на обучении {}'.format(mean_train_loss))
 
-            info_log('Эпоха: {} итераций, {:0.2f} сек'.format(train_batches_n,
-                                                           (datetime.datetime.now() - epoch_start).total_seconds()))
-            info_log('Среднее значение функции потерь на обучении {}'.format(mean_train_loss))
-
 
             model.eval()
             mean_val_loss = 0
@@ -169,18 +161,14 @@ def train_eval_loop(model, train_dataset, val_dataset, criterion,
 
             mean_val_loss /= val_batches_n
             print('Среднее значение функции потерь на валидации {}'.format(mean_val_loss))
-            info_log('Среднее значение функции потерь на валидации {}'.format(mean_val_loss))
 
             if mean_val_loss < best_val_loss:
                 best_epoch_i = epoch_i
                 best_val_loss = mean_val_loss
                 best_model = copy.deepcopy(model)
                 print('Новая лучшая модель!')
-                info_log('Новая лучшая модель!')
             elif epoch_i - best_epoch_i > early_stopping_patience:
                 print('Модель не улучшилась за последние {} эпох, прекращаем обучение'.format(
-                    early_stopping_patience))
-                info_log('Модель не улучшилась за последние {} эпох, прекращаем обучение'.format(
                     early_stopping_patience))
                 break
 
@@ -188,7 +176,6 @@ def train_eval_loop(model, train_dataset, val_dataset, criterion,
                 lr_scheduler.step(mean_val_loss)
 
             print()
-            info_log(' ')
         except KeyboardInterrupt:
             print('Досрочно остановлено пользователем')
             break
