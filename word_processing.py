@@ -28,7 +28,7 @@ class WordProcessing(object):
         text_tokenize = []
         sentence_tokenize = []
         for n in range(len(text)):
-            for sentence in self.tokenize_sentence(text[n]['text'][0]):
+            for sentence in self.tokenize_sentence(text[n][0]):
                 sentence_tokenize.extend(sentence)
             text_tokenize.append(sentence_tokenize.copy())
             sentence_tokenize.clear()
