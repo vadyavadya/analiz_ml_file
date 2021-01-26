@@ -9,7 +9,7 @@ TOKEN_RE = re.compile(r'[\w\d]+')
 
 def tokenize_text_simple_regex(txt, min_token_size=4):
     # txt['text'][0] из за особенности составления корпуса
-    txt = txt[0].lower()
+    txt = txt.lower()
     all_tokens = TOKEN_RE.findall(txt)
     return [token for token in all_tokens if len(token) >= min_token_size]
 
